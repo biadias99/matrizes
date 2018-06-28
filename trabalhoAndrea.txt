@@ -1,0 +1,31 @@
+MENU PRINCIPAL
+
+1. Operações entre matrizes 
+2. Verificação 
+3. Resolva um sistema linear triangular
+4. Determinar matriz transposta
+5. Sobre
+6. Sair
+
+<esc> para sair
+<enter> para escolher
+<F1> para ajuda
+
+MENU OPERAÇÕES 
+
+1. Soma duas matrizes
+2. Subtraia duas matrizes
+3. Multiplique duas matrizes
+
+MENU VERIFICAÇÃO
+
+1. Verifique se uma matriz é simétrica
+2. Quadrado mágico
+3. Quadrado latino
+4. Matriz de permutação
+
+MENU RESOLVA
+
+1. Sistema linear triangular inferior
+2. Sistema linear triangular superior
+
