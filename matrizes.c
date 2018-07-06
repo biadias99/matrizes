@@ -21,6 +21,7 @@ void verificaQuadradoMagico(int matriz[][i][j], int num, int m);
 int verificaLinha(int matrizResultante[][j], int linha, int coluna);
 int verificaColuna(int matrizResultante[][j], int linha, int coluna);
 void verificaQuadradoLatino(int matriz[][i][j], int num, int m);
+int verificaPermutacao(int matrizResultante[][j], int linha, int coluna);
 void verificaMatrizPermutacao(int matriz[][i][j], int num, int m);
 void resolverSistemaLinearInferior(int matriz[][i][j], int num, int m);
 int verificaInferior(float matrizResultante[][j], int linha, int coluna);
@@ -717,8 +718,65 @@ void verificaQuadradoLatino(int matriz[][i][j], int num, int m){
         sair();
 }
 
+int verificaPermutacao(int matrizResultante[][j], int linha, int coluna){
+    int a, b, cont = 0;
+    for(a = 0; a < linha; a++){
+        for(b = 0; b < coluna; b++){
+            if(matrizResultante[a][b] != 1 && matrizResultante[a][b] != 0)
+                return 0;
+            if(matrizResultante[a][b] == 1)
+                cont++;
+        }
+    }
+    return cont;
+}
+
 void verificaMatrizPermutacao(int matriz[][i][j], int num, int m){
-    gotoxy(50,2);printf("Funcao que verifica se a matriz eh uma matriz de permutacao.");
+     gotoxy(50,1);printf("VERIFICAR MATRIZ PERMUTACAO");
+    int a, b;
+    char tecla;
+    int linha, coluna, cont = 0;
+    linha = pegaLinha();
+    coluna = pegaColuna();
+     while(linha != coluna){
+        system("cls");
+        gotoxy(20,1);printf("A matriz deve ser quadrada para verificar se eh uma matriz de permutacao(ex: 3x3).");
+        gotoxy(20,2);printf("Pressione alguma tecla para digitar novamente..");
+        getch();
+        linha = pegaLinha();
+        coluna = pegaColuna();
+    }
+    int matrizResultante[i][j];
+    pegaMatriz(matriz, linha, coluna, num, m);
+    exibeMatriz(matriz, linha, coluna, num, m);
+    for(a = 0; a < linha; a++){
+        for(b = 0; b < coluna; b++){
+            matrizResultante[a][b] = matriz[0][a][b];
+        }
+    }
+    cont = verificaPermutacao(matrizResultante, linha, coluna);
+    /*----------------------VERIFICA MATRIZ PERMUTACAO-----------------------*/
+
+    if(cont == linha)
+        printf("Sua matriz eh uma matriz de permutacao!");
+    else
+        printf("Sua matriz nao eh uma matriz de permutacao!");
+
+    /*-----------------------------------------------------------------------*/
+
+
+    printf("\n\n\n\n\t\t\t\t<SPACE> Voltar ao menu anterior");
+    printf("\n\n\t\t\t\t<ESC> Sair");
+
+    tecla = getch();
+
+    while(tecla != 32 && tecla !=27){
+        tecla = getch();
+    }
+    if(tecla == 32)
+        menuVerificacao(matriz);
+    else if(tecla == 27)
+        sair();
 }
 
 void matrizTransposta(int matriz[][i][j]){
