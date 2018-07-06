@@ -1,5 +1,5 @@
 /* Trabalho de Matrizes
-Bianca Dias Barbosa e Henrique Marciano da Silva 
+Bianca Dias Barbosa e Henrique Marciano da Silva
 BSI - 2018*/
 #include <stdio.h>
 #include <conio.h>
@@ -20,11 +20,11 @@ void verificaSimetria(int matriz[][i][j], int num, int m);
 void verificaQuadradoMagico(int matriz[][i][j], int num, int m);
 int verificaLinha(int matrizResultante[][j], int linha, int coluna);
 int verificaColuna(int matrizResultante[][j], int linha, int coluna);
-void verificaQuadradoLatino();
-void verificaMatrizPermutacao();
+void verificaQuadradoLatino(int matriz[][i][j], int num, int m);
+void verificaMatrizPermutacao(int matriz[][i][j], int num, int m);
 void resolverSistemaLinearInferior(int matriz[][i][j], int num, int m);
 int verificaInferior(float matrizResultante[][j], int linha, int coluna);
-int verificaSuperior(int matrizResultante[][j], int linha, int coluna);
+int verificaSuperior(float matrizResultante[][j], int linha, int coluna);
 void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m);
 void ajuda();
 void sobre();
@@ -426,7 +426,7 @@ void menuVerificacao(int matriz[][i][j]){
 					verificaQuadradoLatino(matriz,1,0);
 					break;
 				case 6:
-					verificaMatrizPermutacao();
+					verificaMatrizPermutacao(matriz, 1, 0);
 					break;
 				case 8:
 					menu();
@@ -569,14 +569,14 @@ int verificaLinha(int matrizResultante[][j], int linha, int coluna){
 	int soma = 0;
 	int v[linha*coluna];
 	int igual = 0;
-	
+
 	for(a=1;a<=linha;a++){
 		soma+=a;
-		v[a-1]=a;	
+		v[a-1]=a;
 	}
 
 	aux = linha;
-	
+
 	if(linha == coluna){
 		//verificar se todos os elementos da linha realmente são iguais ao número
 		for(a = 0; a < linha; a++){
@@ -590,8 +590,8 @@ int verificaLinha(int matrizResultante[][j], int linha, int coluna){
 					}
 				}
 				if(cont == aux){ // se o numero for maior que o numero de linha
-					return 0; // é diferente de todos os elementos 
-				}	
+					return 0; // é diferente de todos os elementos
+				}
 				igual = 0;
 				for(f=0;f<linha;f++){
 					if(matrizResultante[a][b] == v[f]){
@@ -600,12 +600,17 @@ int verificaLinha(int matrizResultante[][j], int linha, int coluna){
 				}
 				if(igual>1){ // se tiver elemento repetido
 					return 0;
-				}			
+				}
 	        }
 	        if(somaLinha != soma){ // se a soma n for igual a soma padrão da linha
 	        	return 0;
 			}
-    	}		
+    	}
+
+				if(cont == aux){
+					return 0; // é diferente de todos os elementos
+				}
+
     	return 1;
 	}else{
 		return 0;
@@ -622,9 +627,9 @@ int verificaColuna(int matrizResultante[][j], int linha, int coluna){
 
 	for(a=1;a<=linha;a++){
 		soma+=a;
-		v[a-1]=a;		
+		v[a-1]=a;
 	}
-	
+
 	if(linha == coluna){
 		//verificar se todos os elementos da coluna realmente são iguais ao número
 		for(a = 0; a < coluna; a++){
@@ -638,7 +643,7 @@ int verificaColuna(int matrizResultante[][j], int linha, int coluna){
 					}
 				}
 				if(cont == aux){
-					return 0; // é diferente de todos os elementos 
+					return 0; // é diferente de todos os elementos
 				}
 				igual = 0;
 				for(f=0;f<linha;f++){
@@ -681,17 +686,22 @@ void verificaQuadradoLatino(int matriz[][i][j], int num, int m){
     }
 
   	latino = verificaLinha(matrizResultante,linha,coluna);
-  	
+
+
   	if(latino != 0)
   		latino = verificaColuna(matrizResultante,linha,coluna);
-  	
+
+
+  	latino = verificaColuna(matrizResultante,linha,coluna);
+
+
     if(latino)
         printf("\n\nSua matriz eh um quadrado latino");
     else
         printf("\n\nSua matriz nao eh um quadrado latino\n\n");
             if(linha != coluna)
                 printf("Observacao: nao existe uma matriz que seja um quadrado latino que nao seja quadrada, ex: 3x3.");
-   
+
 
     printf("\n\n\n\n\t\t\t\t<SPACE> Voltar ao menu anterior");
     printf("\n\n\t\t\t\t<ESC> Sair");
@@ -707,7 +717,7 @@ void verificaQuadradoLatino(int matriz[][i][j], int num, int m){
         sair();
 }
 
-void verificaMatrizPermutacao(){
+void verificaMatrizPermutacao(int matriz[][i][j], int num, int m){
     gotoxy(50,2);printf("Funcao que verifica se a matriz eh uma matriz de permutacao.");
 }
 
@@ -870,7 +880,7 @@ void resolverSistemaLinearInferior(int matriz[][i][j], int num, int m){
         sair();
 }
 
-int verificaSuperior(int matrizResultante[][j], int linha, int coluna){
+int verificaSuperior(float matrizResultante[][j], int linha, int coluna){
 	int a, b;
 
 	if(linha == coluna){
@@ -889,10 +899,11 @@ int verificaSuperior(int matrizResultante[][j], int linha, int coluna){
 void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m){
     int a, b;
     char tecla;
-    int linha, coluna, soma = 0, superior = 1;
+    int linha, coluna, superior = 1;
     linha = pegaLinha();
     coluna = pegaColuna();
-    int matrizResultante[i][j], bX[i], x[i];
+    float matrizResultante[i][j], x[i], soma = 0;
+    int bX[i];
     pegaMatriz(matriz, linha, coluna, num, m);
     system("cls");
 	gotoxy(10,2);printf("Insira os valores dos termos independentes:");
@@ -907,7 +918,7 @@ void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m){
     for(a = 0; a < linha; a++){
         for(b = 0; b < coluna; b++){
             matrizResultante[a][b] = matriz[0][a][b];
-            printf("%d ",matrizResultante[a][b]);
+            printf("%.2f ",matrizResultante[a][b]);
         }
         printf("\n");
     }
@@ -915,18 +926,18 @@ void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m){
     superior = verificaSuperior(matrizResultante, linha, coluna);
 
     if(superior){
-    	x[0]=bX[0]/matrizResultante[0][0];
-    	for(a=linha-1;a>0;a--){
+    	x[linha -1]=(float)bX[linha - 1]/matrizResultante[linha - 1][linha - 1];
+    	for(a = linha - 2; a >= 0; a--){
     		soma = 0;
-    		for(b=a+1;b<coluna;b++){
-    			soma+=matrizResultante[a][b] * x[b];
+    		for(b = a + 1; b < coluna; b++){
+    			soma += matrizResultante[a][b] * x[b];
 			}
-			x[a]=(bX[a]-soma)/matrizResultante[a][a];
+			x[a] = (float)(bX[a] - soma)/matrizResultante[a][a];
 		}
 
 		printf("\nOs valores de x sao: ");
-		for(a=0;a<linha;a++){
-			printf("x%d = %d ",a+1,x[a]);
+		for(a = 0;a < linha;a++){
+			printf("x%d = %.2f ",a+1,x[a]);
 		}
 	}else{
 		 printf("\nSua matriz nao eh triangular superior. Por isso, nao podemos fazer seu sistema!\n\n");
