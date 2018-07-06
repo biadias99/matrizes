@@ -573,7 +573,7 @@ int verificaSuperior(int matrizResultante[][j], int linha, int coluna){
 	if(linha == coluna){
 		for(a = 0; a < linha; a++){ // verifica se é superior 
 	        for(b = 0; b < coluna; b++){
-	            if(i>j && matrizResultante[i][j] != 0)
+	            if(a>b && matrizResultante[a][b] != 0)
 					return 0;
 	        }
     	}
