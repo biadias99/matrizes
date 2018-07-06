@@ -284,7 +284,7 @@ void somaMatrizes(int matriz[][i][j], int num, int m){
 }
 
 void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t){
-    gotoxy(50,1);printf("Pressione alguma tecla para ver a matriz resultante: "); //ideia para n sobrescrever a matriz 2.
+    gotoxy(30,1);printf("Pressione alguma tecla para ver a matriz resultante: "); //ideia para n sobrescrever a matriz 2.
     getch();
     system("cls");
     hideCursor();
@@ -296,9 +296,13 @@ void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t){
        linha = coluna;
        coluna = aux;
     }
-    for(a = 0; a < linha; a++){
+    for(a = 0; a < linha; a++){ 
         for(b = 0; b < coluna; b++){
-            printf("%3d ",matrizResultante[a][b]);
+        	if(t == 1){
+        		printf("%3d ",matrizResultante[b][a]);
+			}else{
+				printf("%3d ",matrizResultante[a][b]);
+			}
         }
         printf("\n");
     }
