@@ -13,9 +13,9 @@ int pegaColuna();
 void pegaMatriz(int matriz[][i][j], int linha, int coluna, int num, int m);
 void somaMatrizes(int matriz[][i][j], int num, int m);
 void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t);
-void subtraiMatrizes();
-void multiplicaMatrizes();
-void verificaSimetria();
+void subtraiMatrizes(int matriz[][i][j], int num, int m);
+void multiplicaMatrizes(int matriz[][i][j], int num, int m);
+void verificaSimetria(int matriz[][i][j], int num, int m);
 void verificaQuadradoMagico();
 void verificaQuadradoLatino();
 void verificaMatrizPermutacao();
@@ -156,23 +156,16 @@ int pegaLinha(){
 
 void pegaMatriz(int matriz[][i][j], int linha, int coluna, int num, int m){
 	system("cls");
-	int a, b, c;
-
+	int a, b, c, aux;
 	for(c = 0; c < num; c++){
-        gotoxy(10,2);printf("Insira os elementos da matriz (%dx%d) %d: ",linha,coluna, c + 1);
-         if(m == 1 && c == 1)
+        if(m == 1 && c == 1)
         {
-            if(linha > coluna)
-            {
-                linha--;
-                coluna++;
-            }
-            else if(linha < coluna)
-            {
-                linha++;
-                coluna--;
-            }
+           aux = linha;
+           linha = coluna;
+           coluna = aux;
         }
+        gotoxy(10,2);printf("Insira os elementos da matriz (%dx%d) %d: ",linha,coluna, c + 1);
+
         for(a=0;a<linha;a++){
             for(b=0;b<coluna;b++){
                 scanf("%d",&matriz[c][a][b]);
@@ -185,21 +178,14 @@ void pegaMatriz(int matriz[][i][j], int linha, int coluna, int num, int m){
 void exibeMatriz(int matriz[][i][j], int linha, int coluna, int num, int m)
 {
     hideCursor();
-    int a, b, c;
+    int a, b, c, aux;
     printf("\n\n\n");
     for(c = 0; c < num; c++){
          if(m == 1 && c == 1)
         {
-            if(linha > coluna)
-            {
-                linha--;
-                coluna++;
-            }
-            else if (linha < coluna)
-            {
-                linha++;
-                coluna--;
-            }
+           aux = linha;
+           linha = coluna;
+           coluna = aux;
         }
         printf("Matriz %d: ", c + 1);
         putchar('\n');
@@ -251,7 +237,7 @@ void menuOperacoes(int matriz[][i][j]){// definir valor MAXIMO da matriz, mas o 
 					subtraiMatrizes(matriz, 2, 0);
 					break;
 				case 4:
-					multiplicaMatrizes();
+					multiplicaMatrizes(matriz, 2, 1);
 					break;
 				case 6:
 					menu();
@@ -297,9 +283,13 @@ void somaMatrizes(int matriz[][i][j], int num, int m){
 }
 
 void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t){
+    gotoxy(50,1);printf("Pressione alguma tecla para ver a matriz resultante: "); //ideia para n sobrescrever a matriz 2.
+    getch();
+    system("cls");
     hideCursor();
     int a, b, aux;
-    gotoxy(0,15); printf("Matriz resultante: \n");
+    printf("\n\n\n");
+    printf("Matriz resultante: \n\n"); //matriz resultante ta sobrescrevendo a matriz 2 quando passa de 4x4.
     if(t == 1){
        aux = linha;
        linha = coluna;
@@ -311,7 +301,6 @@ void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t){
         }
         printf("\n");
     }
-
 }
 
 void subtraiMatrizes(int matriz[][i][j], int num, int m){
@@ -345,8 +334,42 @@ void subtraiMatrizes(int matriz[][i][j], int num, int m){
         sair();
 }
 
-void multiplicaMatrizes(){
-    gotoxy(50,2);printf("Funcao para multiplicar matrizes.");
+void multiplicaMatrizes(int matriz[][i][j], int num, int m){
+    int a, b, c, aux = 0, coluna1;
+    char tecla;
+    int linha, coluna;
+    linha = pegaLinha();
+    coluna = pegaColuna();
+    int matrizResultante[i][j];
+    pegaMatriz(matriz, linha, coluna, num, m);
+    exibeMatriz(matriz, linha, coluna, num, m);
+    coluna1 = coluna;
+    coluna = linha;
+    gotoxy(50,1);printf("MULTIPLICACAO DE MATRIZES");
+    for(a = 0; a < linha; a++){
+        for(b = 0; b < coluna; b++){
+            matrizResultante[a][b] = 0;
+            for(c = 0; c < coluna1; c++){
+                aux += matriz[0][a][c] * matriz[1][c][b];
+            }
+            matrizResultante[a][b] = aux;
+            aux = 0;
+        }
+    }
+    imprimeMatriz(matrizResultante, linha, coluna, 0);
+
+    printf("\n\n\n\n\t\t\t\t<SPACE> Voltar ao menu anterior");
+    printf("\n\n\t\t\t\t<ESC> Sair");
+
+    tecla = getch();
+
+    while(tecla != 32 && tecla !=27){
+        tecla = getch();
+    }
+    if(tecla == 32)
+        menuOperacoes(matriz);
+    else if(tecla == 27)
+        sair();
 }
 
 void menuVerificacao(int matriz[][i][j]){
@@ -550,8 +573,7 @@ void resolverSistemaLinearSuperior(){
 void sair(){
 	system("cls");
 	gotoxy(40,2);printf("Obrigada por utilizar nosso sistema!\n");
-	exit(0); //coloquei system("exit") para fechar o programa com o esc;
-	//parece que o system("exit") não resolveu, e dependendo, precisa apertar de 2 a mais vezes o ESC.
+	exit(0); // força o fechamento do programa;
 }
 
 void hideCursor(){
