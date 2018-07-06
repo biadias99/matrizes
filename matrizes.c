@@ -16,12 +16,13 @@ void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t);
 void subtraiMatrizes(int matriz[][i][j], int num, int m);
 void multiplicaMatrizes(int matriz[][i][j], int num, int m);
 void verificaSimetria(int matriz[][i][j], int num, int m);
-void verificaQuadradoMagico();
+void verificaQuadradoMagico(int matriz[][i][j], int num, int m);
 void verificaQuadradoLatino();
 void verificaMatrizPermutacao();
-void resolverSistemaLinearInferior();
+void resolverSistemaLinearInferior(int matriz[][i][j], int num, int m);
+int verificaInferior(float matrizResultante[][j], int linha, int coluna);
 int verificaSuperior(int matrizResultante[][j], int linha, int coluna);
-void resolverSistemaLinearSuperior();
+void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m);
 void ajuda();
 void sobre();
 void menuOperacoes(int matriz[][i][j]);
@@ -296,7 +297,7 @@ void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t){
        linha = coluna;
        coluna = aux;
     }
-    for(a = 0; a < linha; a++){ 
+    for(a = 0; a < linha; a++){
         for(b = 0; b < coluna; b++){
         	if(t == 1){
         		printf("%3d ",matrizResultante[b][a]);
@@ -563,7 +564,7 @@ void verificaMatrizPermutacao(){
     gotoxy(50,2);printf("Funcao que verifica se a matriz eh uma matriz de permutacao.");
 }
 
-void matrizTransposta(int matriz[][i][j]){ //Bianca vai arrumar;
+void matrizTransposta(int matriz[][i][j]){
     int a, b;
     char tecla;
     int linha, coluna,
@@ -627,7 +628,7 @@ void menuSistemaLinear(int matriz[][i][j]){
 		if(tecla == 13){
 			switch(cont){
 				case 0:
-					resolverSistemaLinearInferior();
+					resolverSistemaLinearInferior(matriz, 1, 0);
 					break;
 				case 2:
 					resolverSistemaLinearSuperior(matriz, 1, 0);
@@ -643,17 +644,92 @@ void menuSistemaLinear(int matriz[][i][j]){
 
 }
 
-void resolverSistemaLinearInferior(){
-    gotoxy(50,2);printf("Funcao que resolve um sistema linear triangular inferior.");
+int verificaInferior(float matrizResultante[][j], int linha, int coluna){
+	int a, b;
+
+	if(linha == coluna){
+		for(a = 0; a < linha; a++){ // verifica se é inferior
+	        for(b = 0; b < coluna; b++){
+	            if(a < b && matrizResultante[a][b] != 0)
+					return 0;
+	        }
+    	}
+    	return 1;
+	}else
+		return 0;
+
+}
+
+void resolverSistemaLinearInferior(int matriz[][i][j], int num, int m){
+    int a, b;
+    char tecla;
+    int linha, coluna, inferior = 1;
+    linha = pegaLinha();
+    coluna = pegaColuna();
+    float matrizResultante[i][j], x[i], soma = 0;
+    int bX[i];
+    pegaMatriz(matriz, linha, coluna, num, m);
+    system("cls");
+	gotoxy(10,2);printf("Insira os valores dos termos independentes:");
+    for(a = 0; a < linha; a++){
+    	scanf("%d",&bX[a]);
+	}
+    hideCursor();
+    system("cls");
+    gotoxy(50,1);printf("SISTEMA LINEAR TRIANGULAR INFERIOR");
+
+    printf("\n");
+    for(a = 0; a < linha; a++){
+        for(b = 0; b < coluna; b++){
+            matrizResultante[a][b] = matriz[0][a][b];
+            printf("%.f ", matrizResultante[a][b]);
+        }
+        printf("\n");
+    }
+
+    inferior = verificaInferior(matrizResultante, linha, coluna);
+
+    if(inferior){
+    	x[0]=(float)bX[0]/matrizResultante[0][0];
+    	for(a = 0; a < linha; a++){
+    		soma = 0;
+    		for(b = 0; b <= (a - 1); b++){
+    			soma += matrizResultante[a][b] * x[b];
+			}
+			x[a]=(float)(bX[a]-soma)/matrizResultante[a][a];
+		}
+
+		printf("\nOs valores de x sao: ");
+		for(a = 0;a < linha; a++){
+			printf("x%d = %.2f ",a+1,x[a]);
+		}
+	}else{
+		 printf("\nSua matriz nao eh triangular inferior. Por isso, nao podemos fazer seu sistema!\n\n");
+            if(linha != coluna)
+                printf("Observacao: nao existe matriz triangular superior que nao seja quadrada, ex: 3x3.");
+	}
+
+    printf("\n\n\n\n\t\t\t\t<SPACE> Voltar ao menu anterior");
+    printf("\n\n\t\t\t\t<ESC> Sair");
+
+    tecla = getch();
+
+    while(tecla != 32 && tecla !=27){
+        tecla = getch();
+    }
+    if(tecla == 32)
+        menuSistemaLinear(matriz);
+    else if(tecla == 27)
+        sair();
 }
 
 int verificaSuperior(int matrizResultante[][j], int linha, int coluna){
 	int a, b;
-	
+
 	if(linha == coluna){
-		for(a = 0; a < linha; a++){ // verifica se é superior 
+		for(a = 0; a < linha; a++){ // verifica se é superior
 	        for(b = 0; b < coluna; b++){
-	            if(a>b && matrizResultante[a][b] != 0)
+	            if(a > b && matrizResultante[a][b] != 0)
 					return 0;
 	        }
     	}
@@ -679,7 +755,7 @@ void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m){
     hideCursor();
     system("cls");
     gotoxy(50,1);printf("SISTEMA LINEAR TRIANGULAR SUPERIOR");
-    
+
     printf("\n");
     for(a = 0; a < linha; a++){
         for(b = 0; b < coluna; b++){
@@ -688,9 +764,9 @@ void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m){
         }
         printf("\n");
     }
-	
+
     superior = verificaSuperior(matrizResultante, linha, coluna);
-    
+
     if(superior){
     	x[0]=bX[0]/matrizResultante[0][0];
     	for(a=linha-1;a>0;a--){
@@ -700,8 +776,8 @@ void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m){
 			}
 			x[a]=(bX[a]-soma)/matrizResultante[a][a];
 		}
-		
-		printf("\nOs valores de x sao:");
+
+		printf("\nOs valores de x sao: ");
 		for(a=0;a<linha;a++){
 			printf("x%d = %d ",a+1,x[a]);
 		}
@@ -710,7 +786,7 @@ void resolverSistemaLinearSuperior(int matriz[][i][j], int num, int m){
             if(linha != coluna)
                 printf("Observacao: nao existe matriz triangular superior que nao seja quadrada, ex: 3x3.");
 	}
-	
+
     printf("\n\n\n\n\t\t\t\t<SPACE> Voltar ao menu anterior");
     printf("\n\n\t\t\t\t<ESC> Sair");
 
