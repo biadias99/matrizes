@@ -17,6 +17,8 @@ void subtraiMatrizes(int matriz[][i][j], int num, int m);
 void multiplicaMatrizes(int matriz[][i][j], int num, int m);
 void verificaSimetria(int matriz[][i][j], int num, int m);
 void verificaQuadradoMagico();
+int verificaLinha(int matrizResultante[][j], int linha, int coluna);
+int verificaColuna(int matrizResultante[][j], int linha, int coluna);
 void verificaQuadradoLatino();
 void verificaMatrizPermutacao();
 void resolverSistemaLinearInferior();
@@ -416,7 +418,7 @@ void menuVerificacao(int matriz[][i][j]){
 					verificaQuadradoMagico(matriz,1,0);
 					break;
 				case 4:
-					verificaQuadradoLatino();
+					verificaQuadradoLatino(matriz,1,0);
 					break;
 				case 6:
 					verificaMatrizPermutacao();
@@ -555,15 +557,104 @@ void verificaQuadradoMagico(int matriz[][i][j], int num, int m){
         sair();
 }
 
-void verificaQuadradoLatino(){
-    gotoxy(50,2);printf("Funcao que verifica se a matriz eh um quadrado latino.");
+int verificaLinha(int matrizResultante[][j], int linha, int coluna){
+	int a, b, c, aux, cont = 0;
+	aux = linha;
+	if(linha == coluna){
+		//verificar se todos os elementos da linha realmente são iguais ao número
+		for(a = 0; a < linha; a++){
+	        for(b = 0; b < coluna; b++){
+	        	cont = 0;
+	        	for(c = 1; c <= aux; c++){
+	        		if(matrizResultante[a][b] != c){
+	        			cont++;
+					}
+				}
+				if(cont == aux){
+					return 0; // é diferente de todos os elementos 
+				}				
+	        }
+    	}		
+    	return 1;
+	}else{
+		return 0;
+	}
+}
+
+int verificaColuna(int matrizResultante[][j], int linha, int coluna){
+	int a, b, c, aux, cont = 0;
+	aux = linha;
+	if(linha == coluna){
+		//verificar se todos os elementos da coluna realmente são iguais ao número
+		for(a = 0; a < coluna; a++){
+	        for(b = 0; b < linha; b++){
+	        	cont = 0;
+	        	for(c = 1; c <= aux; c++){
+	        		if(matrizResultante[b][a] != c){
+	        			cont++;
+					}
+				}
+				if(cont == aux){
+					return 0; // é diferente de todos os elementos 
+				}
+	        }
+    	}
+    	return 1;
+	}else{
+		return 0;
+	}
+}
+
+void verificaQuadradoLatino(int matriz[][i][j], int num, int m){
+    int a, b;
+    char tecla;
+    int linha, coluna;
+    int latino = 1;
+    linha = pegaLinha();
+    coluna = pegaColuna();
+    int matrizResultante[i][j];
+    pegaMatriz(matriz, linha, coluna, num, m);
+    hideCursor();
+    gotoxy(50,1);printf("QUADRADO LATINO");
+    printf("\n");
+    for(a = 0; a < linha; a++){
+        for(b = 0; b < coluna; b++){
+            matrizResultante[a][b] = matriz[0][a][b];
+            printf("%d ",matrizResultante[a][b]);
+        }
+        printf("\n");
+    }
+
+  	latino = verificaLinha(matrizResultante,linha,coluna);
+  	latino = verificaColuna(matrizResultante,linha,coluna);
+  	
+    if(latino)
+        printf("\n\nSua matriz eh um quadrado latino");
+    else
+        printf("Sua matriz nao eh um quadrado latino\n\n");
+            if(linha != coluna)
+                printf("Observacao: nao existe uma matriz que seja um quadrado latino que nao seja quadrada, ex: 3x3.");
+   
+
+    printf("\n\n\n\n\t\t\t\t<SPACE> Voltar ao menu anterior");
+    printf("\n\n\t\t\t\t<ESC> Sair");
+
+    tecla = getch();
+
+    while(tecla != 32 && tecla !=27){
+        tecla = getch();
+    }
+    if(tecla == 32)
+        menuVerificacao(matriz);
+    else if(tecla == 27)
+        sair();
 }
 
 void verificaMatrizPermutacao(){
     gotoxy(50,2);printf("Funcao que verifica se a matriz eh uma matriz de permutacao.");
 }
 
-void matrizTransposta(int matriz[][i][j]){ //Bianca vai arrumar;
+void matrizTransposta(int matriz[][i][j]){ //Bianca já arrumou
     int a, b;
     char tecla;
     int linha, coluna,
