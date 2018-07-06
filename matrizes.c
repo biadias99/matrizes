@@ -408,7 +408,7 @@ void menuVerificacao(int matriz[][i][j]){
 					verificaSimetria(matriz, 1, 0);
 					break;
 				case 2:
-					verificaQuadradoMagico();
+					verificaQuadradoMagico(matriz,1,0);
 					break;
 				case 4:
 					verificaQuadradoLatino();
@@ -470,8 +470,84 @@ void verificaSimetria(int matriz[][i][j], int num, int m){
         sair();
 }
 
-void verificaQuadradoMagico(){
-    gotoxy(50,2);printf("Funcao que verifica se a matriz eh um quadrado magico.");
+void verificaQuadradoMagico(int matriz[][i][j], int num, int m){
+    gotoxy(50,1);printf("VERIFICAR QUADRADO MAGICO");
+    int a, b, somaL[20], somaC[20], somaD[2] = {0, 0}, cont = 0;
+    char tecla;
+    int linha, coluna;
+    linha = pegaLinha();
+    coluna = pegaColuna();
+    while(linha != coluna){
+        system("cls");
+        gotoxy(20,1);printf("A matriz deve ser quadrada para verificar se eh um quadrado magico(ex: 3x3).");
+        gotoxy(20,2);printf("Pressione alguma tecla para digitar novamente..");
+        getch();
+        linha = pegaLinha();
+        coluna = pegaColuna();
+    }
+    int matrizResultante[i][j];
+    pegaMatriz(matriz, linha, coluna, num, m);
+    exibeMatriz(matriz, linha, coluna, num, m);
+    for(a = 0; a < linha; a++){
+        for(b = 0; b < coluna; b++){
+            matrizResultante[a][b] = matriz[0][a][b];
+        }
+    }
+    /*--------------------------ZERA SOMAS---------------------------------*/
+    for(a = 0; a < linha; a++){
+        somaL[a] = 0;
+        somaC[a] = 0;
+    }
+    /*--------------------SOMA LINHA, COLUNA E DIAGONAIS-------------------*/
+    int x = 0, y = 1;
+    for(a = 0; a < linha; a++){
+        for(b = 0; b < coluna; b++){
+            somaL[a] += matrizResultante[a][b];
+            somaC[a] += matrizResultante[b][a];
+            if(a == b)
+                somaD[0] += matrizResultante[a][b];
+            if(a == x && b == coluna - y){
+                somaD[1] += matrizResultante[a][b];
+                x++;
+                y++;
+            }
+        }
+    }
+    /*----------------------VERIFICA QUADRADO MAGICO-----------------------*/
+    y = 1;
+    for(a = 0; a < 1; a++)
+        for(b = 0; b < coluna; b++){
+            if(y != coluna)
+                if(somaL[a] == somaL[y])
+                    cont++;
+            if(somaL[a] == somaC[b])
+                cont++;
+            y++;
+        }
+        if(somaL[0] == somaD[0])
+                cont++;
+        if(somaL[0] == somaD[1])
+                cont++;
+
+    if(cont == linha + coluna + 1)
+        printf("Sua matriz eh um quadrado magico!");
+    else
+        printf("Sua matriz nao eh um quadrado magico!");
+
+    /*---------------------------------------------------------------------*/
+
+    printf("\n\n\n\n\t\t\t\t<SPACE> Voltar ao menu anterior");
+    printf("\n\n\t\t\t\t<ESC> Sair");
+
+    tecla = getch();
+
+    while(tecla != 32 && tecla !=27){
+        tecla = getch();
+    }
+    if(tecla == 32)
+        menuVerificacao(matriz);
+    else if(tecla == 27)
+        sair();
 }
 
 void verificaQuadradoLatino(){
