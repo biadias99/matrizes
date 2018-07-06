@@ -1,5 +1,6 @@
 /* Trabalho de Matrizes
-Bianca Dias Barbosa e Henrique Marciano da Silva BSI - 2018*/
+Bianca Dias Barbosa e Henrique Marciano da Silva 
+BSI - 2018*/
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
@@ -16,13 +17,9 @@ void imprimeMatriz(int matrizResultante[][j], int linha, int coluna, int t);
 void subtraiMatrizes(int matriz[][i][j], int num, int m);
 void multiplicaMatrizes(int matriz[][i][j], int num, int m);
 void verificaSimetria(int matriz[][i][j], int num, int m);
-<<<<<<< HEAD
 void verificaQuadradoMagico(int matriz[][i][j], int num, int m);
-=======
-void verificaQuadradoMagico();
 int verificaLinha(int matrizResultante[][j], int linha, int coluna);
 int verificaColuna(int matrizResultante[][j], int linha, int coluna);
->>>>>>> c136932f25074efe2b25265a56738899647313e0
 void verificaQuadradoLatino();
 void verificaMatrizPermutacao();
 void resolverSistemaLinearInferior(int matriz[][i][j], int num, int m);
@@ -714,11 +711,7 @@ void verificaMatrizPermutacao(){
     gotoxy(50,2);printf("Funcao que verifica se a matriz eh uma matriz de permutacao.");
 }
 
-<<<<<<< HEAD
 void matrizTransposta(int matriz[][i][j]){
-=======
-void matrizTransposta(int matriz[][i][j]){ //Bianca já arrumou
->>>>>>> c136932f25074efe2b25265a56738899647313e0
     int a, b;
     char tecla;
     int linha, coluna,
