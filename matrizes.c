@@ -49,6 +49,8 @@ void menu(){
 	int cont = 0;
 	int matriz[N][i][j];
 
+	system("color 07");
+
 	hideCursor();
 
 	gotoxy(50,1);printf("MENU PRINCIPAL");
@@ -116,6 +118,7 @@ void ajuda(){
 void sobre(){
 	int tecla = 32;
 	system("cls");
+	system("color 1F");
 	gotoxy(50,1);printf("SOBRE - MATRIZES");
 	printf("\n\n\tTrabalho de matrizes desenvolvido por Bianca Dias e Henrique Marciano\n\t");
 	printf("\n\tDisciplina: Algoritmos I\n\t");
@@ -559,21 +562,47 @@ void verificaQuadradoMagico(int matriz[][i][j], int num, int m){
 
 int verificaLinha(int matrizResultante[][j], int linha, int coluna){
 	int a, b, c, aux, cont = 0;
+	int d, e, f;
+	int somaLinha = 0;
+	int soma = 0;
+	int v[linha*coluna];
+	int igual = 0;
+	
+	for(a=1;a<=linha;a++){
+		soma+=a;
+		v[a-1]=a;	
+	}
+
 	aux = linha;
+	
 	if(linha == coluna){
 		//verificar se todos os elementos da linha realmente são iguais ao número
 		for(a = 0; a < linha; a++){
+			somaLinha = 0;
 	        for(b = 0; b < coluna; b++){
 	        	cont = 0;
+	        	somaLinha+=matrizResultante[a][b];
 	        	for(c = 1; c <= aux; c++){
 	        		if(matrizResultante[a][b] != c){
 	        			cont++;
 					}
 				}
-				if(cont == aux){
+				if(cont == aux){ // se o numero for maior que o numero de linha
 					return 0; // é diferente de todos os elementos 
-				}				
+				}	
+				igual = 0;
+				for(f=0;f<linha;f++){
+					if(matrizResultante[a][b] == v[f]){
+						igual++;
+					}
+				}
+				if(igual>1){ // se tiver elemento repetido
+					return 0;
+				}			
 	        }
+	        if(somaLinha != soma){ // se a soma n for igual a soma padrão da linha
+	        	return 0;
+			}
     	}		
     	return 1;
 	}else{
@@ -582,13 +611,25 @@ int verificaLinha(int matrizResultante[][j], int linha, int coluna){
 }
 
 int verificaColuna(int matrizResultante[][j], int linha, int coluna){
-	int a, b, c, aux, cont = 0;
+	int a, b, c, d, e, f, aux, cont = 0;
+	int soma = 0;
+	int somaColuna = 0;
+	int v[linha*coluna];
+	int igual = 0;
 	aux = linha;
+
+	for(a=1;a<=linha;a++){
+		soma+=a;
+		v[a-1]=a;		
+	}
+	
 	if(linha == coluna){
 		//verificar se todos os elementos da coluna realmente são iguais ao número
 		for(a = 0; a < coluna; a++){
+			somaColuna = 0;
 	        for(b = 0; b < linha; b++){
 	        	cont = 0;
+	        	somaColuna+=matrizResultante[b][a];
 	        	for(c = 1; c <= aux; c++){
 	        		if(matrizResultante[b][a] != c){
 	        			cont++;
@@ -597,7 +638,19 @@ int verificaColuna(int matrizResultante[][j], int linha, int coluna){
 				if(cont == aux){
 					return 0; // é diferente de todos os elementos 
 				}
+				igual = 0;
+				for(f=0;f<linha;f++){
+					if(matrizResultante[a][b] == v[f]){
+						igual++;
+					}
+				}
+				if(igual>1){
+					return 0;
+				}
 	        }
+	        if(somaColuna != soma){
+	        	return 0;
+			}
     	}
     	return 1;
 	}else{
@@ -626,12 +679,14 @@ void verificaQuadradoLatino(int matriz[][i][j], int num, int m){
     }
 
   	latino = verificaLinha(matrizResultante,linha,coluna);
-  	latino = verificaColuna(matrizResultante,linha,coluna);
+  	
+  	if(latino != 0)
+  		latino = verificaColuna(matrizResultante,linha,coluna);
   	
     if(latino)
         printf("\n\nSua matriz eh um quadrado latino");
     else
-        printf("Sua matriz nao eh um quadrado latino\n\n");
+        printf("\n\nSua matriz nao eh um quadrado latino\n\n");
             if(linha != coluna)
                 printf("Observacao: nao existe uma matriz que seja um quadrado latino que nao seja quadrada, ex: 3x3.");
    
